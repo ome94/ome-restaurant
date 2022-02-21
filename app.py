@@ -1,5 +1,6 @@
+import hashlib
 import os
-from flask import  Flask, render_template, redirect, request, url_for, session
+from flask import  Flask, render_template, redirect, request, url_for, flash, session
 from sqlalchemy.orm import sessionmaker
 from models import Base, engine, User, Item, Basket, Order
 
@@ -13,8 +14,9 @@ DB = DBSession()
 def index():
     title = 'Home'
     heading = 'Restaurant'
+    USER = session.get('USER')
     items = DB.query(Item).all()
-    return render_template('index.html', title=title, heading=heading, items=items)
+    return render_template('index.html', title=title, heading=heading, items=items, user=USER)
 
 @app.route('/signup/')
 def signup():
@@ -24,7 +26,23 @@ def signup():
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     title = 'Login'
-    return render_template('login.html', title=title, heading=title)
+    
+    if request.method == 'GET':
+        return render_template('login.html', title=title, heading=title)
+    
+    email = request.form.get('email')
+    password = request.form.get('password')
+    
+    if not(email and password):
+        flash('Email or Password Not Given')
+        return redirect(url_for('login'))
+
+    password_hash = hashlib.md5(password.encode()).hexdigest()
+
+    USER = DB.get(User).filter_by(email=email, password=password_hash).one()
+    # Assuming the user isn't malicious
+    session['USER'] = USER
+    return redirect(url_for('index'))
 
 @app.route('/logout/')
 def logout():
@@ -35,7 +53,11 @@ def logout():
 
 @app.route('/get/<int:item_no>/', methods=['POST'])
 def get_item(item_no):
-    pass
+    
+    item = DB.get(Item, item_no)
+    basket = DB.query(Basket).filter_by(user_id)
+    flash(f'Item {item.name} added')
+    redirect(url_for('index'))
 
 def check_login(render, title, heading):
     USER = session.get("USER")

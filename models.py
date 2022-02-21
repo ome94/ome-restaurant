@@ -35,6 +35,7 @@ class Order(Base):
 
     order_no = Column(Integer, primary_key=True)
     order_time = Column(DateTime, default=datetime.isoformat(datetime.now()))
+    basket_id = Column(Integer, ForeignKey('order_baskets.id'))
     basket = relationship(Basket)
 
 # create DB engine
