@@ -39,7 +39,7 @@ class Order(Base):
     basket = relationship(Basket)
 
 # create DB engine
-engine = create_engine(os.environ.get("DATABASE_URL"))
+engine = create_engine(os.environ.get("DATABASE_URI"))
 
 # create DB ORM Mapping
 Base.metadata.create_all(engine)
