@@ -9,8 +9,9 @@
 <body>
     <nav>
         <div>
+            <a href="{{ url_for('index') }}">Home</a>
             {% if user %}
-            {{ user.name }}
+            {{ user }}
             {% else %}
             <a href="{{ url_for('login') }}">Login</a>
             {% endif %}
