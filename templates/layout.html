@@ -6,29 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant | {{ title }}</title>
 </head>
-<body>
-    <nav>
-        <div>
-            <a href="{{ url_for('index') }}">Home</a>
-            {% if user %}
-            {{ user }}
-            {% else %}
-            <a href="{{ url_for('login') }}">Login</a>
+<body>    
+    <header>
+        <nav>
+                <div>
+                    <a href="{{ url_for('index') }}">Home</a>
+                    {% if user %}
+                    {{ user.name }}
+                    {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    {% endif %}
+                </div>
+            </nav>
+    </header>
+    <main>
+        <h1>{{ heading }}</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ol></ol>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
             {% endif %}
-        </div>
-    </nav>
-    <h1>{{ heading }}</h1>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ol></ol>
-            {% for message in messages %}
-            <li>{{ message }}</li>
+        {% endwith %}
+    
+        {% block body %}
+        {% endblock %}
+    </main>
+    <aside>
+        <ul>
+            {% for selection in cart %}
+            <li>{{ selection.item.name }}</li>
             {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    {% block body %}
-    {% endblock %}
-
+        </ul>
+        <a href="{{ url_for('checkout') }}">Checkout Now</a>
+    </aside>
 </body>
 </html>

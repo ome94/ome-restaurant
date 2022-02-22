@@ -1,7 +1,7 @@
 import os
 
-from datetime import datetime
-from sqlalchemy import DateTime, ForeignKey, create_engine, Column, Integer, String, Float
+from sqlalchemy import (create_engine,Boolean, ForeignKey,
+    Column, Integer, String, Float)
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -14,8 +14,8 @@ class User(Base):
     email = Column(String(255), unique=True)
     password = Column(String(255))
 
-class Item(Base):
-    __tablename__ = "items"
+class StockItem(Base):
+    __tablename__ = "stock_items"
 
     item_no = Column(Integer, primary_key=True)
     name = Column(String, unique=True)
@@ -23,20 +23,15 @@ class Item(Base):
     price = Column(Float)
     stock_qty = Column(Integer)
 
-class Basket(Base):
-    __tablename__ = "order_baskets"
+class Selection(Base):
+    __tablename__ = "selections"
 
     id = Column(Integer, primary_key=True)
-    item_no = Column(Integer, ForeignKey('items.item_no'))
+    item_no = Column(Integer, ForeignKey('stock_items.item_no'))
     user_id = Column(Integer, ForeignKey('users.id'))
+    paid = Column(Boolean, default=False)
+    item = relationship(StockItem)
 
-class Order(Base):
-    __tablename__ = "orders"
-
-    order_no = Column(Integer, primary_key=True)
-    order_time = Column(DateTime, default=datetime.isoformat(datetime.now()))
-    basket_id = Column(Integer, ForeignKey('order_baskets.id'))
-    basket = relationship(Basket)
 
 # create DB engine
 engine = create_engine(os.environ.get("DATABASE_URI"))

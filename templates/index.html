@@ -7,9 +7,11 @@
         <div>PRICE: ${{ item.price }}</div>
         <div>REMAINING QTY:{{ item.stock_qty }}</div>
         {% if user %}
-        <a href="{{ url_for('get_item', item_no=item.item_no, _method='POST') }}"><button>Add To Basket</button></a>
+        <a href="{{ url_for('get_item', item_no=item.item_no) }}">
+            <button>Add To Basket</button>
+        </a>
         {% else %}
-        <p>Login to add this item to your basket.</p>
+        <p>Login to add this item to your selection.</p>
         {% endif %}
     </p>
 </div>

@@ -1,39 +1,39 @@
 from sqlalchemy.orm import sessionmaker
-from models import engine, Item
+from models import engine, StockItem
 
 DBSession = sessionmaker(bind=engine)
 DB = DBSession()
 
 def main():
-    item1 = Item(
+    StockItem1 = StockItem(
     name='Apple Juice',
     description='A healthy fruit juice from apple',
     price=2.99,
     stock_qty=150
     )
-    DB.add(item1)
+    DB.add(StockItem1)
     DB.commit()
-    print('Item1 Added')
+    print('StockItem1 Added')
 
-    item2 = Item(
+    StockItem2 = StockItem(
     name='Akara Burger',
     description='A delicious bean snackgood for energy',
     price=1.99,
     stock_qty=150
     )
-    DB.add(item2)
+    DB.add(StockItem2)
     DB.commit()
-    print('Item2 Added')
+    print('StockItem2 Added')
 
-    item3 = Item(
+    StockItem3 = StockItem(
     name='Moi moi',
     description='A yummy food courtesy of beans',
     price=3.99,
     stock_qty=150
     )
-    DB.add(item3)
+    DB.add(StockItem3)
     DB.commit()
-    print('Item3 Added')
+    print('StockItem3 Added')
 
 
 if __name__ == '__main__':
