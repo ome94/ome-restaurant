@@ -20,7 +20,11 @@ def index():
     heading = 'Restaurant'
     user = session.get('USER')
     items = DB.query(StockItem).all()
-    selection = DB.query(Selection).filter_by(user_id=user['id'], paid=False).all()
+    if user:
+        selection = DB.query(Selection).filter_by(user_id=user['id'], paid=False).all()
+    else:
+        selection = None
+        
     return render_template('index.html', title=title, heading=heading, items=items, user=user, cart=selection)
 
 

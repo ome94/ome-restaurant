@@ -34,12 +34,16 @@
         {% endblock %}
     </main>
     <aside>
+        {% if cart %}
         <ul>
             {% for selection in cart %}
             <li>{{ selection.item.name }}</li>
             {% endfor %}
         </ul>
         <a href="{{ url_for('checkout') }}">Checkout Now</a>
+        {% else %}
+        No selection in your cart yet
+        {% endif %}
     </aside>
 </body>
 </html>
